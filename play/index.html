@@ -1,13 +1,24 @@
 <h1>Play</h1>
 <p><b>Important</b>: You cannot join the game when there are already two players, there is only one game running at a time on the server.</p>
 <button onclick="makematch()">Play</button>
-<a id="link" href="../play/game.html">Confirm</a>
+<p id="result">Sorry, but the game is full right now! Wait for the next game to start.</p>
 
-<script src="/socket.io/socket.io.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.min.js"></script>
 
 <script>
-var socket = io("/socket.io/socket.io.js");
+var socket = io("");
 function makematch() {
+  var output = document.getElementById("result");
   // check if there are already 2 players
+  socket.emit("checkplayer");
+  socket.on("check",function(data) {
+    if data.success {
+      output.style.display = "none";
+      window.location.href = "./game.html"
+    }
+    else {
+      output.style.display = "block";
+    }
+  });
 }
 </script>
